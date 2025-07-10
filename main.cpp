@@ -3,28 +3,28 @@
 using namespace std;
 
 struct Operacion {
-    int numero_operacion;
+    int idOperacion;
     string canal;
-    string tipo;
+    string tipo;    
+};
+
+struct Movimiento {
+    float monto;  
+    Operacion operacion;
+};
+
+struct Cuenta {
+    float saldo;
+    int numeroCuenta;
+    Movimiento movimientos[100];
+    int cantidadMovimientos;
 };
 
 struct Persona {
     int dni;
     string nombre;
-};
-
-struct Movimientos {
-    int cantidadMovimientos;
-    float montoRetiro;
-    Operacion operacion;
-};
-
-struct Cuenta {
-    Persona datos;
-    float saldo;
-    int numeroCuenta;
-    Movimientos movimiento[100];
-    int cantidadMovimientos;
+    Cuenta cuentas[100];
+    int cantidadCuentas;
 };
 
 int main() {
