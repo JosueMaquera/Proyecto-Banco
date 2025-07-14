@@ -17,16 +17,16 @@ struct Movimiento {
 
 struct Cuenta {
     float saldo;
-    int numeroCuenta;
+    string numeroCuenta;
     Movimiento movimientos[100];
     int cantidadMovimientos;
 };
 
 struct Persona {
-    int dni;
+    string dni;
     string nombre;
-    Cuenta cuentas[100];
-    int cantidadCuentas;
+    Cuenta cuentas[3];
+    int cantidadCuentas = 0;
 };
 
 #endif
