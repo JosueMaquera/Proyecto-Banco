@@ -9,6 +9,7 @@ void registrarPersona();
 void agregarCuenta();
 void mostrarPersona();
 void gestionarMovimiento();
+void historialMovimientos();
 
 Persona personas[100];
 int totalPersonas = 0;
@@ -167,4 +168,38 @@ void gestionarMovimiento() {
 
     cuenta.movimientos[cuenta.cantidadMovimientos += 1] = nuevo;
     cout << "Movimiento registrado correctamente." << endl;
+}
+
+void historialMovimientos() {
+    string dni;
+    cout << "DNI de la persona: ";
+    cin >> dni;
+
+    int indicePersona = buscarPersona(dni);
+    if (indicePersona == -1) {
+        cout << "Persona no encontrada." << endl;
+        return;
+    } 
+
+    Persona& p = personas[indicePersona];
+    if (p.cantidadCuentas == 0) {
+        cout << "Esta persona no tiene cuentas registradas." << endl;
+        return;
+    }
+
+    cout << "Seleccione una cuenta: " << endl;
+    for (int i = 0; i < p.cantidadCuentas; i++) {
+        cout << i + 1 << "." << p.cuentas[i].numeroCuenta << endl;
+    }
+
+    int indiceCuenta;
+    cout << "Igrese opcion: ";
+    cin >> indiceCuenta;
+    indiceCuenta -= 1;
+
+    if (indiceCuenta < 0 || indiceCuenta >= p.cantidadCuentas) {
+        cout << "Cuenta invalida." << endl; 
+        return;
+    }
+
 }
