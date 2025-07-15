@@ -15,7 +15,11 @@ Persona personas[100];
 int totalPersonas = 0;
 
 int main() {
-    
+    registrarPersona();
+    agregarCuenta();
+    mostrarPersona();
+    gestionarMovimiento();
+    historialMovimientos();
     return 0;
 }
 
@@ -202,4 +206,18 @@ void historialMovimientos() {
         return;
     }
 
+    Cuenta& cuenta = p.cuentas[indiceCuenta];
+
+    cout << "Movimientos registrados en la cuenta " << cuenta.numeroCuenta << ":" << endl;
+    for (int i = 0; i < cuenta.cantidadMovimientos; i++) {
+        Movimiento& m = cuenta.movimientos[i];
+        cout << "  ID: " << m.operacion.idOperacion
+             << " | Tipo: " << m.operacion.tipo
+             << " | Canal: " << m.operacion.canal
+             << " | Monto: " << m.monto << endl;
+    }
+
+    if (cuenta.cantidadMovimientos == 0) {
+        cout << "No hay movimientos registrados." << endl;
+    }
 }
