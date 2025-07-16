@@ -136,7 +136,7 @@ void gestionarMovimiento() {
     }
 
     int indiceCuenta;
-    cout << "Ingrese opcion";
+    cout << "Ingrese opcion: ";
     cin >> indiceCuenta;
     indiceCuenta -= 1;
 
@@ -149,12 +149,14 @@ void gestionarMovimiento() {
 
     Movimiento nuevo;
     
+    cin.ignore();
     cout << "Ingrese tipo (por ejemplo: deposito, retiro): ";
     getline(cin, nuevo.operacion.tipo);
 
     cout << "Ingrese el monto del " << nuevo.operacion.tipo << ":";
     cin >> nuevo.monto;
 
+    cin.ignore();
     cout << "Ingrese canal (por ejemplo: app, ventanilla): ";
     getline(cin, nuevo.operacion.canal);
 
@@ -170,7 +172,10 @@ void gestionarMovimiento() {
         return;
     }
 
-    cuenta.movimientos[cuenta.cantidadMovimientos += 1] = nuevo;
+    nuevo.operacion.idOperacion = cuenta.cantidadMovimientos + 1; 
+    cuenta.movimientos[cuenta.cantidadMovimientos] = nuevo;
+    cuenta.cantidadMovimientos++;
+
     cout << "Movimiento registrado correctamente." << endl;
 }
 
