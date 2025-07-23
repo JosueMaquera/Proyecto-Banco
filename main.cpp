@@ -1,5 +1,5 @@
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 #include "structs.h"
 using namespace std;
 
@@ -15,11 +15,29 @@ Persona personas[100];
 int totalPersonas = 0;
 
 int main() {
-    registrarPersona();
-    agregarCuenta();
-    mostrarPersona();
-    gestionarMovimiento();
-    historialMovimientos();
+    int opcion;
+    do {
+        cout << "\n===== MENU PRINCIPAL =====\n";
+        cout << "1. Registrar persona\n";
+        cout << "2. Agregar cuenta\n";
+        cout << "3. Mostrar persona\n";
+        cout << "4. Realizar movimiento\n";
+        cout << "5. Historial de movimientos\n";
+        cout << "6. Salir\n";
+        cout << "Ingrese una opcion: ";
+        cin >> opcion;
+
+        switch(opcion) {
+            case 1: registrarPersona(); break;
+            case 2: agregarCuenta(); break;
+            case 3: mostrarPersona(); break;
+            case 4: gestionarMovimiento(); break;
+            case 5: historialMovimientos(); break;
+            case 6: cout << "Saliendo del programa..." << endl; break;
+            default: cout << "Opcion invalida." << endl;
+        }
+    } while(opcion != 6);
+
     return 0;
 }
 
@@ -83,10 +101,11 @@ void agregarCuenta() {
     }
 
     Cuenta nueva;
-    cout << "Número de cuenta: ";
+    cout << "Numero de cuenta: ";
     cin >> nueva.numeroCuenta;
     cout << "Saldo inicial: ";
     cin >> nueva.saldo;
+    nueva.cantidadMovimientos = 0;
 
     personas[reem].cuentas[personas[reem].cantidadCuentas++] = nueva;
     cout << "Cuenta agregada correctamente." << endl;
@@ -108,7 +127,8 @@ void mostrarPersona() {
     cout << "DNI: " << p.dni << endl;
     cout << "Cuentas:" << endl;
     for (int i = 0; i < p.cantidadCuentas; i++) {
-        cout << "  Cuenta " << i + 1 << ": " << p.cuentas[i].numeroCuenta << " | Saldo: " << p.cuentas[i].saldo << endl;
+        cout << "  Cuenta " << i + 1 << ": " << p.cuentas[i].numeroCuenta
+             << " | Saldo: " << p.cuentas[i].saldo << endl;
     }
 }
 
@@ -148,12 +168,12 @@ void gestionarMovimiento() {
     Cuenta& cuenta = p.cuentas[indiceCuenta];
 
     Movimiento nuevo;
-    
+
     cin.ignore();
     cout << "Ingrese tipo (por ejemplo: deposito, retiro): ";
     getline(cin, nuevo.operacion.tipo);
 
-    cout << "Ingrese el monto del " << nuevo.operacion.tipo << ":";
+    cout << "Ingrese el monto del " << nuevo.operacion.tipo << ": ";
     cin >> nuevo.monto;
 
     cin.ignore();
@@ -165,6 +185,7 @@ void gestionarMovimiento() {
     } else if (nuevo.operacion.tipo == "retiro") {
         if (nuevo.monto > cuenta.saldo) {
             cout << "Saldo insuficiente." << endl;
+            return;
         }
         cuenta.saldo -= nuevo.monto;
     } else {
@@ -172,9 +193,8 @@ void gestionarMovimiento() {
         return;
     }
 
-    nuevo.operacion.idOperacion = cuenta.cantidadMovimientos + 1; 
-    cuenta.movimientos[cuenta.cantidadMovimientos] = nuevo;
-    cuenta.cantidadMovimientos++;
+    nuevo.operacion.idOperacion = cuenta.cantidadMovimientos + 1;
+    cuenta.movimientos[cuenta.cantidadMovimientos++] = nuevo;
 
     cout << "Movimiento registrado correctamente." << endl;
 }
@@ -198,11 +218,11 @@ void historialMovimientos() {
 
     cout << "Seleccione una cuenta: " << endl;
     for (int i = 0; i < p.cantidadCuentas; i++) {
-        cout << i + 1 << "." << p.cuentas[i].numeroCuenta << endl;
+        cout << i + 1 << ". " << p.cuentas[i].numeroCuenta << endl;
     }
 
     int indiceCuenta;
-    cout << "Igrese opcion: ";
+    cout << "Ingrese opcion: ";
     cin >> indiceCuenta;
     indiceCuenta -= 1;
 
@@ -213,6 +233,11 @@ void historialMovimientos() {
 
     Cuenta& cuenta = p.cuentas[indiceCuenta];
 
+    if (cuenta.cantidadMovimientos == 0) {
+        cout << "No hay movimientos registrados." << endl;
+        return;
+    }
+
     cout << "Movimientos registrados en la cuenta " << cuenta.numeroCuenta << ":" << endl;
     for (int i = 0; i < cuenta.cantidadMovimientos; i++) {
         Movimiento& m = cuenta.movimientos[i];
@@ -220,9 +245,5 @@ void historialMovimientos() {
              << " | Tipo: " << m.operacion.tipo
              << " | Canal: " << m.operacion.canal
              << " | Monto: " << m.monto << endl;
-    }
-
-    if (cuenta.cantidadMovimientos == 0) {
-        cout << "No hay movimientos registrados." << endl;
     }
 }
